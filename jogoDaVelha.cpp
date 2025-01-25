@@ -24,16 +24,23 @@ public:
     }
 
     void mostrarTabuleiro() {
-        //limpa o terminal
-        system("clear");// para win system("cls"); 
+       //limpa o terminal
+        system("clear");// para win system("cls");
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                cout << " " << tabuleiro[i][j] << " ";
-                if (j < 2) cout << "|";
+                if (tabuleiro[i][j] == 'X') {
+                    cout << "\033[31m" << " " << tabuleiro[i][j] << " " << "\033[0m";
+                } else if (tabuleiro[i][j] == 'O') {
+                    cout << "\033[33m" << " " << tabuleiro[i][j] << " " << "\033[0m";
+                } else {
+                    cout << " " << tabuleiro[i][j] << " ";
+                }
+                if (j < 2) cout << "\033[34m|\033[0m";
             }
             cout << endl;
-            if (i < 2) cout << "---|---|---" << endl;
+
+            if (i < 2) cout << "\033[34m---|---|---\033[0m" << endl;
         }
     }
 
@@ -118,7 +125,7 @@ public:
 
             if (jogadorAtual == 'X') {
 
-                cout << "Jogador " << jogadorAtual << ", faça sua jogada (linha e coluna [1-3]): ";
+                cout << "\033[36mJogador " << jogadorAtual << ", faça sua jogada (linha e coluna [1-3]): \033[0m";
                 cin >> linha >> coluna;
 
                 linha -= 1;
@@ -127,7 +134,7 @@ public:
                 if (linha >= 0 && linha < 3 && coluna >= 0 && coluna < 3 && tabuleiro[linha][coluna] == ' ') {
                     tabuleiro[linha][coluna] = jogadorAtual;
                 } else {
-                    cout << "Jogada inválida! Tente novamente." << endl;
+                    cout << "\033[31mJogada inválida! Tente novamente.\033[0m" << endl;
                     this_thread::sleep_for(chrono::milliseconds(1000));
                     continue;
                 }
@@ -136,7 +143,7 @@ public:
                 if (modoBot) {
                     botJogar();
                 } else {
-                    cout << "Jogador " << jogadorAtual << ", faça sua jogada (linha e coluna [1-3]): ";
+                    cout << "\033[33mJogador " << jogadorAtual << ", faça sua jogada (linha e coluna [1-3]): \033[0m";
                     cin >> linha >> coluna;
 
                     linha -= 1;
@@ -145,7 +152,7 @@ public:
                     if (linha >= 0 && linha < 3 && coluna >= 0 && coluna < 3 && tabuleiro[linha][coluna] == ' ') {
                         tabuleiro[linha][coluna] = jogadorAtual;
                     } else {
-                        cout << "Jogada inválida! Tente novamente." << endl;
+                        cout << "\033[31mJogada inválida! Tente novamente.\033[0m" << endl;
                         this_thread::sleep_for(chrono::milliseconds(1000));
                         continue;
                     }
@@ -159,24 +166,24 @@ public:
         mostrarTabuleiro();
 
         if (vitoria) {
-            cout << "Jogador " << (jogadorAtual == 'X' ? 'O' : 'X') << " venceu!" << endl;
+            cout << "\033[32mJogador " << (jogadorAtual == 'X' ? 'O' : 'X') << " venceu!\033[0m" << endl;
         } else {
-            cout << "Empate!" << endl;
+            cout << "\033[37mEmpate!\033[0m" << endl;
         }
     }
 
     ~JogoDaVelha() {
-        cout << "O Jogo terminou." << endl;
+        cout << "\033[31mO Jogo terminou.\033[0m" << endl;
     }
 };
 
 int main() {
     int escolha;
     
-    cout << "Escolha o modo de jogo:" << endl;
-    cout << "1 - Jogar contra um amigo" << endl;
-    cout << "2 - Jogar contra o bot" << endl;
-    cout << "Escolha: ";
+    cout << "\033[36mEscolha o modo de jogo:\033[0m" << endl;
+    cout << "\033[36m1 - Jogar contra um amigo\033[0m" << endl;
+    cout << "\033[36m2 - Jogar contra o bot\033[0m" << endl;
+    cout << "\033[36mEscolha: \033[0m";
     cin >> escolha;
 
     bool jogarContraBot = (escolha == 2);
